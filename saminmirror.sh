@@ -72,9 +72,18 @@ deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-ba
 deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-updates $CHANNEL
 deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-security $CHANNEL"
 			(
-#				$sh_c 'apt-get update -qq >/dev/null'
-#				$sh_c "DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $pre_reqs >/dev/null"
-#				$sh_c "curl -fsSL \"$DOWNLOAD_URL/linux/$lsb_dist/gpg\" | apt-key add -qq - >/dev/null"
+				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_saminback"
+				$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list"
+				$sh_c 'apt-get update'
+			)
+			exit 0
+			;;
+		debian)
+			CHANNEL="main contrib non-free"
+			apt_repo="deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version $CHANNEL
+deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-updates $CHANNEL
+deb [arch=$(dpkg --print-architecture)] http://security.debian.org/debian-security $dist_version/updates main"
+			(
 				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_saminback"
 				$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list"
 				$sh_c 'apt-get update'
