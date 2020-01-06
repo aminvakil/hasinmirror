@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
-
+if [ -f /etc/apt/sources.list_saminback ]; then
+        echo "You have executed this script once! Executing again would remove your original sources.list which is in /etc/apt/sources.list_saminback"
+        exit
+fi
 DEFAULT_DOWNLOAD_URL="http://mirror.saminserver.com"
 if [ -z "$DOWNLOAD_URL" ]; then
 	DOWNLOAD_URL=$DEFAULT_DOWNLOAD_URL
