@@ -1,7 +1,16 @@
 # mirrorchange
 Scripts to change mirrors in different linux distors package managers to mirrors.saminserver.com
 
-Just find your distro and download your script
+Supported and tested distros:
 
-TODO:
-One file for all distros
+Ubuntu 16.04
+
+Ubuntu 18.04
+
+CentOS 7
+
+Unsupported distros:
+
+CentOS 8
+
+Read carefully before execution
