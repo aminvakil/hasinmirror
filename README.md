@@ -1,4 +1,4 @@
-# mirrorchange
+# Change mirrors to mirror.saminserver.com
 Script to change mirrors in different linux distors package managers to **mirror.saminserver.com**
 
 **Supported and Tested Distros**:
