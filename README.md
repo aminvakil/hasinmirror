@@ -1,5 +1,5 @@
 # Change mirrors to mirror.saminserver.com
-Script to change mirrors in different linux distors package managers to **mirror.saminserver.com**
+You could use this script which automatically replaces your existing mirrors to **mirror.saminserver.com** which is located in Iran and would speed your updating, installing packages up.
 
 **Supported and Tested Distros**:
 
