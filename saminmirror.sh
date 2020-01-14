@@ -87,8 +87,11 @@ deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-se
 deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-updates $CHANNEL
 deb [arch=$(dpkg --print-architecture)] http://security.debian.org/debian-security $dist_version/updates main"
 			(
+				echo "Backing original sources.list to /etc/apt/sources.list_saminback..."
 				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_saminback"
+				echo "Creating new sources.list with Samin Repos..."
 				$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list"
+				echo "Updating metadata from fresh repos..."
 				$sh_c 'apt-get update'
 			)
 			exit 0
@@ -109,9 +112,13 @@ deb [arch=$(dpkg --print-architecture)] http://security.debian.org/debian-securi
                                 pkg_suffix="el"
                         fi
                         (
+				echo "Installing requirements for managing yum repos..."
                                 $sh_c "$pkg_manager install -y -q $pre_reqs"
+				echo "Disabling default repos..."
                                 $sh_c "$config_manager --disable $repos"
+				echo "Adding Samin Repos..."
 				$sh_c "$config_manager --add-repo $yum_repo"
+				echo "Updating metadata from fresh repos..."
                                 $sh_c "$pkg_manager makecache"
                         )
 			exit 0
