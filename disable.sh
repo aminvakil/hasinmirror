@@ -103,7 +103,7 @@ do_change() {
 			echo "Enabling default repos..."
                         $sh_c "$config_manager --enable $repos"
 			echo "Removing Samin Repos..."
-			$sh_c "$config_manager --del-repo $yum_repo"
+			$sh_c "rm -rf /etc/yum.repos.d/centos-Samin.repo"
 			echo "Updating metadata from fresh repos..."
 			$sh_c "$pkg_manager makecache"
 			echo "Samin Mirrors removed successfully!"
