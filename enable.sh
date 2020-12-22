@@ -4,10 +4,6 @@ if [ -f /etc/apt/sources.list_hasinback ]; then
         echo "You have executed this script once! Executing again would remove your original sources.list which is in /etc/apt/sources.list_hasinback"
         exit
 fi
-if [ -f /etc/apk/repositories_hasinback ]; then
-        echo "You have executed this script once! Executing again would remove your original repositories which is in /etc/apk/repositories_hasinback"
-        exit
-fi
 DEFAULT_DOWNLOAD_URL="http://mirrors.hasin.ir"
 if [ -z "$DOWNLOAD_URL" ]; then
 	DOWNLOAD_URL=$DEFAULT_DOWNLOAD_URL
@@ -42,9 +38,6 @@ do_change() {
 	lsb_dist=$( get_distribution )
 	lsb_dist="$(echo "$lsb_dist" | tr '[:upper:]' '[:lower:]')"
 	case "$lsb_dist" in
-		alpine)
-			dist_version="$(sed -r 's/([^.]+.[^.]*).*/\1/' /etc/alpine-release)"
-		;;
 		ubuntu)
 			if command_exists lsb_release; then
 				dist_version="$(lsb_release --codename | cut -f2)"
@@ -53,20 +46,6 @@ do_change() {
 				dist_version="$(. /etc/lsb-release && echo "$DISTRIB_CODENAME")"
 			fi
 		;;
-		debian)
-			dist_version="$(sed 's/\/.*//' /etc/debian_version | sed 's/\..*//')"
-			case "$dist_version" in
-				10)
-					dist_version="buster"
-				;;
-				9)
-					dist_version="stretch"
-				;;
-				8)
-					dist_version="jessie"
-				;;
-			esac
-		;;
 		centos)
 			if [ -z "$dist_version" ] && [ -r /etc/os-release ]; then
 				dist_version="$(. /etc/os-release && echo "$VERSION_ID")"
@@ -74,18 +53,6 @@ do_change() {
 		;;
 	esac
 	case "$lsb_dist" in
-		alpine)
-			CHANNELS="main community"
-			set -- $CHANNELS
-			$sh_c "cp /etc/apk/repositories /etc/apk/repositories_hasinback"
-			$sh_c "echo > /etc/apk/repositories"
-			while [ -n "$1" ]; do
-				$sh_c "echo http://mirrors.hasin.ir/alpine/v\"$dist_version\"/\"$1\" >> /etc/apk/repositories"
-				shift
-			done
-			$sh_c 'apk update'
-			exit 0
-			;;
 		ubuntu)
 			CHANNEL="main restricted universe multiverse"
 			apt_repo="deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version $CHANNEL
@@ -95,21 +62,6 @@ deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-se
 			(
 				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_hasinback"
 				$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list"
-				$sh_c 'apt-get update'
-			)
-			exit 0
-			;;
-		debian)
-			CHANNEL="main contrib non-free"
-			apt_repo="deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version $CHANNEL
-deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-updates $CHANNEL
-deb [arch=$(dpkg --print-architecture)] http://security.debian.org/debian-security $dist_version/updates main"
-			(
-				echo "Backing original sources.list to /etc/apt/sources.list_hasinback..."
-				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_hasinback"
-				echo "Creating new sources.list with Samin Repos..."
-				$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list"
-				echo "Updating metadata from fresh repos..."
 				$sh_c 'apt-get update'
 			)
 			exit 0
