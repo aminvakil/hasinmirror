@@ -67,7 +67,7 @@ deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-se
 			exit 0
 			;;
 		centos)
-			repo_file="Samin.repo"
+			repo_file="Hasin.repo"
 			yum_repo="$DOWNLOAD_URL/$lsb_dist-$repo_file"
 			repos="base updates extras"
                         if [ "$lsb_dist" = "fedora" ]; then
@@ -86,7 +86,7 @@ deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-se
                                 $sh_c "$pkg_manager install -y -q $pre_reqs"
 				echo "Disabling default repos..."
                                 $sh_c "$config_manager --disable $repos"
-				echo "Adding Samin Repos..."
+				echo "Adding Hasin Repos..."
 				$sh_c "$config_manager --add-repo $yum_repo"
 				echo "Updating metadata from fresh repos..."
                                 $sh_c "$pkg_manager makecache"
