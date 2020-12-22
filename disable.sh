@@ -34,9 +34,6 @@ do_change() {
 	lsb_dist=$( get_distribution )
 	lsb_dist="$(echo "$lsb_dist" | tr '[:upper:]' '[:lower:]')"
 	case "$lsb_dist" in
-		alpine)
-			dist_version="$(sed -r 's/([^.]+.[^.]*).*/\1/' /etc/alpine-release)"
-		;;
 		ubuntu)
 			if command_exists lsb_release; then
 				dist_version="$(lsb_release --codename | cut -f2)"
@@ -45,20 +42,6 @@ do_change() {
 				dist_version="$(. /etc/lsb-release && echo "$DISTRIB_CODENAME")"
 			fi
 		;;
-		debian)
-			dist_version="$(sed 's/\/.*//' /etc/debian_version | sed 's/\..*//')"
-			case "$dist_version" in
-				10)
-					dist_version="buster"
-				;;
-				9)
-					dist_version="stretch"
-				;;
-				8)
-					dist_version="jessie"
-				;;
-			esac
-		;;
 		centos)
 			if [ -z "$dist_version" ] && [ -r /etc/os-release ]; then
 				dist_version="$(. /etc/os-release && echo "$VERSION_ID")"
@@ -66,19 +49,7 @@ do_change() {
 		;;
 	esac
 	case "$lsb_dist" in
-		alpine)
-			$sh_c "mv /etc/apk/repositories_hasinback /etc/apk/repositories"
-			$sh_c 'apk update'
-			echo "Samin Mirrors removed successfully!"
-			exit 0
-			;;
 		ubuntu)
-			$sh_c "mv /etc/apt/sources.list_hasinback /etc/apt/sources.list"
-			$sh_c 'apt-get update'
-			echo "Samin Mirrors removed successfully!"
-			exit 0
-			;;
-		debian)
 			$sh_c "mv /etc/apt/sources.list_hasinback /etc/apt/sources.list"
 			$sh_c 'apt-get update'
 			echo "Samin Mirrors removed successfully!"
