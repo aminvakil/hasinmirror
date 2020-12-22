@@ -1,14 +1,14 @@
 #!/bin/sh
 set -e
-if [ -f /etc/apt/sources.list_saminback ]; then
-        echo "You have executed this script once! Executing again would remove your original sources.list which is in /etc/apt/sources.list_saminback"
+if [ -f /etc/apt/sources.list_hasinback ]; then
+        echo "You have executed this script once! Executing again would remove your original sources.list which is in /etc/apt/sources.list_hasinback"
         exit
 fi
-if [ -f /etc/apk/repositories_saminback ]; then
-        echo "You have executed this script once! Executing again would remove your original repositories which is in /etc/apk/repositories_saminback"
+if [ -f /etc/apk/repositories_hasinback ]; then
+        echo "You have executed this script once! Executing again would remove your original repositories which is in /etc/apk/repositories_hasinback"
         exit
 fi
-DEFAULT_DOWNLOAD_URL="http://mirror.saminserver.com"
+DEFAULT_DOWNLOAD_URL="http://mirrors.hasin.ir"
 if [ -z "$DOWNLOAD_URL" ]; then
 	DOWNLOAD_URL=$DEFAULT_DOWNLOAD_URL
 fi
@@ -77,10 +77,10 @@ do_change() {
 		alpine)
 			CHANNELS="main community"
 			set -- $CHANNELS
-			$sh_c "cp /etc/apk/repositories /etc/apk/repositories_saminback"
+			$sh_c "cp /etc/apk/repositories /etc/apk/repositories_hasinback"
 			$sh_c "echo > /etc/apk/repositories"
 			while [ -n "$1" ]; do
-				$sh_c "echo http://mirror.saminserver.com/alpine/v\"$dist_version\"/\"$1\" >> /etc/apk/repositories"
+				$sh_c "echo http://mirrors.hasin.ir/alpine/v\"$dist_version\"/\"$1\" >> /etc/apk/repositories"
 				shift
 			done
 			$sh_c 'apk update'
@@ -93,7 +93,7 @@ deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-ba
 deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-updates $CHANNEL
 deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-security $CHANNEL"
 			(
-				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_saminback"
+				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_hasinback"
 				$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list"
 				$sh_c 'apt-get update'
 			)
@@ -105,8 +105,8 @@ deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-se
 deb [arch=$(dpkg --print-architecture)] $DOWNLOAD_URL/$lsb_dist $dist_version-updates $CHANNEL
 deb [arch=$(dpkg --print-architecture)] http://security.debian.org/debian-security $dist_version/updates main"
 			(
-				echo "Backing original sources.list to /etc/apt/sources.list_saminback..."
-				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_saminback"
+				echo "Backing original sources.list to /etc/apt/sources.list_hasinback..."
+				$sh_c "cp /etc/apt/sources.list /etc/apt/sources.list_hasinback"
 				echo "Creating new sources.list with Samin Repos..."
 				$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list"
 				echo "Updating metadata from fresh repos..."

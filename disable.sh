@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-DEFAULT_DOWNLOAD_URL="http://mirror.saminserver.com"
+DEFAULT_DOWNLOAD_URL="http://mirrors.hasin.ir"
 if [ -z "$DOWNLOAD_URL" ]; then
 	DOWNLOAD_URL=$DEFAULT_DOWNLOAD_URL
 fi
@@ -67,19 +67,19 @@ do_change() {
 	esac
 	case "$lsb_dist" in
 		alpine)
-			$sh_c "mv /etc/apk/repositories_saminback /etc/apk/repositories"
+			$sh_c "mv /etc/apk/repositories_hasinback /etc/apk/repositories"
 			$sh_c 'apk update'
 			echo "Samin Mirrors removed successfully!"
 			exit 0
 			;;
 		ubuntu)
-			$sh_c "mv /etc/apt/sources.list_saminback /etc/apt/sources.list"
+			$sh_c "mv /etc/apt/sources.list_hasinback /etc/apt/sources.list"
 			$sh_c 'apt-get update'
 			echo "Samin Mirrors removed successfully!"
 			exit 0
 			;;
 		debian)
-			$sh_c "mv /etc/apt/sources.list_saminback /etc/apt/sources.list"
+			$sh_c "mv /etc/apt/sources.list_hasinback /etc/apt/sources.list"
 			$sh_c 'apt-get update'
 			echo "Samin Mirrors removed successfully!"
 			exit 0
