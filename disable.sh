@@ -52,7 +52,7 @@ do_change() {
 		ubuntu)
 			$sh_c "mv /etc/apt/sources.list_hasinback /etc/apt/sources.list"
 			$sh_c 'apt-get update'
-			echo "Samin Mirrors removed successfully!"
+			echo "Hasin Mirrors removed successfully!"
 			exit 0
 			;;
 		centos)
@@ -73,11 +73,11 @@ do_change() {
                         $sh_c "$pkg_manager install -y -q $pre_reqs"
 			echo "Enabling default repos..."
                         $sh_c "$config_manager --enable $repos"
-			echo "Removing Samin Repos..."
-			$sh_c "rm -rf /etc/yum.repos.d/centos-Samin.repo"
+			echo "Removing Hasin Repos..."
+			$sh_c "rm -rf /etc/yum.repos.d/centos-Hasin.repo"
 			echo "Updating metadata from fresh repos..."
 			$sh_c "$pkg_manager makecache"
-			echo "Samin Mirrors removed successfully!"
+			echo "Hasin Mirrors removed successfully!"
 			exit 0
 			;;
 		*)
